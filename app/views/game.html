@@ -1,0 +1,59 @@
+<div class="jumbotron">
+
+  <div class="header">
+    <div class="container">
+      <button class="btn-sm btn-primary" ng-click="resetGame()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Place Bet</h4>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+
+              <form name="formBetting">
+                <div class="form-group row" ng-repeat="truckerBet in truckerBets">
+                  <label for="player-name-input" class="col-sm-3 col-form-label">{{truckerBet.name}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="number" step="10" id="player-name-input" ng-model="truckerBet.bet" ng-required="true">
+                  </div>
+                </div>
+                <div class="alert-danger" ng-show="alertPlayerOfInsufficientBalance">
+                  <span>You do not have enough balance for this bet. Please reset the game to play.</span>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-12">
+                    <button class="btn-sm btn-primary pull-right" ng-click="setupTruckerBets('#myModal')" ng-disabled="alertPlayerOfInsufficientBalance">Bet</button>
+                    <button class="btn-sm btn-primary pull-right" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container col-sm-8">
+      <button class="btn-sm btn-primary center" ng-click="placeBets('#myModal')">Place bet</button>
+      <button class="btn-sm btn-primary center" ng-click="startRace()" ng-disabled="alertPlayerOfInsufficientBalance">Start race</button>
+    </div>
+  <div class>
+    <div class="col-sm-4 pullRight">
+      <span>{{playerAccountBalance | currency}}</span>
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+
+    </div>
+  </div>
+  </div>
+</div>
