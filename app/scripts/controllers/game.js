@@ -13,27 +13,37 @@ angular.module('madTruckerApp')
     $scope.playerAccountBalance = parseInt(bettingService.playerAccountBalance);
     $scope.truckerBets = [];
     $scope.alertPlayerOfInsufficientBalance = false;
+    $scope.winningAmount = 0;
+    $scope.betsSet = false;
+    $scope.truckerColors = ['null', 'Purple', 'Red', 'Blue', 'Green', 'Yellow', 'Black'];
+
     (function(){
       for(let i=1; i<=$scope.numberOfTruckers; i++){
         $scope.truckerBets.push({
           'id': i,
-          'name': 'trucker' + i,
-          'bet': 0
+          'name': 'Trucker ' + i,
+          'bet': 0,
+          'color': $scope.truckerColors[i]
         });
       }
     })();
 
     function setupTruckerBets(modalId){
-      $scope.alertPlayerOfInsufficientBalance = false;
       bettingService.truckerBets = $scope.truckerBets;
       let totalBet = 0;
       _.each($scope.truckerBets, function(truckerBet) {
           totalBet += truckerBet.bet;
       });
       if(totalBet > bettingService.playerAccountBalance){
+        $scope.betsSet = false;
         $scope.alertPlayerOfInsufficientBalance = true;
       }else{
+        if(totalBet === 0){
+          $scope.betsSet = false;
+          return;
+        }
         angular.element(modalId).modal("hide");
+        $scope.betsSet = true;
       }
     };
 
@@ -44,10 +54,14 @@ angular.module('madTruckerApp')
       _.each($scope.truckerBets, function(truckerBet){
           if(truckerBet.id === $scope.winnerTrucker){
             $scope.playerAccountBalance = ($scope.playerAccountBalance + (2 * truckerBet.bet));
+            $scope.winningAmount = truckerBet.bet;
           }else{
             $scope.playerAccountBalance = ($scope.playerAccountBalance - truckerBet.bet);
           }
-      })
+        truckerBet.bet = 0;
+      });
+      $scope.betsSet = false;
+      $scope.totalBet = 0;
       bettingService.truckerBets = $scope.truckerBets;
     };
 
@@ -55,6 +69,7 @@ angular.module('madTruckerApp')
 
     function placeBets(modalId){
       $scope.alertPlayerOfInsufficientBalance = false;
+      $scope.totalBet = 0;
       angular.element(modalId).modal({backdrop: "static"});
     };
     $scope.placeBets = placeBets;
@@ -63,5 +78,15 @@ angular.module('madTruckerApp')
       $location.path( '/gameSetup' );
     };
     $scope.resetGame = resetGame;
+
+    function calcTotalBet(){
+      let totalBet = 0;
+      _.each($scope.truckerBets, function(truckerBet) {
+        totalBet += truckerBet.bet;
+      });
+      $scope.totalBet = isNaN(totalBet) ? 0 : totalBet;
+    }
+
+    $scope.calcTotalBet = calcTotalBet;
 
   }]);
