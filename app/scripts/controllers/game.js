@@ -14,6 +14,8 @@ angular.module('madTruckerApp')
     $scope.truckerBets = [];
     $scope.alertPlayerOfInsufficientBalance = false;
     $scope.winningAmount = 0;
+    $scope.winnerTrucker = 0;
+    $scope.raceStarting = true;
     $scope.betsSet = false;
     $scope.truckerColors = ['null', 'Purple', 'Red', 'Blue', 'Green', 'Yellow', 'Black'];
 
@@ -53,7 +55,7 @@ angular.module('madTruckerApp')
       $scope.winnerTrucker = Math.floor(Math.random()* ($scope.numberOfTruckers + 1));
       _.each($scope.truckerBets, function(truckerBet){
           if(truckerBet.id === $scope.winnerTrucker){
-            $scope.playerAccountBalance = ($scope.playerAccountBalance + (2 * truckerBet.bet));
+            $scope.playerAccountBalance = (($scope.playerAccountBalance - truckerBet.bet) + (2 * truckerBet.bet));
             $scope.winningAmount = truckerBet.bet;
           }else{
             $scope.playerAccountBalance = ($scope.playerAccountBalance - truckerBet.bet);
@@ -62,12 +64,14 @@ angular.module('madTruckerApp')
       });
       $scope.betsSet = false;
       $scope.totalBet = 0;
+      $scope.raceStarting = false;
       bettingService.truckerBets = $scope.truckerBets;
     };
 
     $scope.startRace = startRace;
 
     function placeBets(modalId){
+      $scope.raceStarting = true;
       $scope.alertPlayerOfInsufficientBalance = false;
       $scope.totalBet = 0;
       angular.element(modalId).modal({backdrop: "static"});

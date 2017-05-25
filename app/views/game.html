@@ -8,8 +8,29 @@
   </div>
 
   <div class="content">
-    <div class="container col-sm-12">
-      This is game area.
+    <div class="container col-sm-12 race">
+      <div class="raceStartBlock">
+        <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': !raceStarting}">
+          <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
+          <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="raceBlock"">
+        <div class="raceLane" ng-repeat="truckerBet in truckerBets" style="border: 1px solid black;">
+          <div ng-class="{'hideTruck': ($index === (winnerTrucker-1) && !raceStarting)}">
+            <div ng-repeat="i in [1,2,3]" style="float: right;color: {{truckerBet.color}}" >
+              <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
+              <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="raceWinBlock">
+        <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== (winnerTrucker-1) && !raceStarting)}">
+          <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
+          <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+        </div>
+      </div>
     </div>
 
   </div>
