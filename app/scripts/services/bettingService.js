@@ -10,7 +10,7 @@
 
 angular.module('madTruckerApp')
   .service('bettingService', function () {
-    this.playerName = '';
+    this.playerName = 'Guest';
     this.initialFunds = 1000;
     this.playerAccountBalance = 1000;
     this.truckerBets = [];

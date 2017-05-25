@@ -1,7 +1,7 @@
-<div class="jumbotron">
+<div class="jumbotron game">
 
   <div class="header">
-    <div class="container col-sm-10">
+    <div class="container col-sm-12">
       <button class="btn-sm btn-primary" ng-click="resetGame()">Reset</button>
     </div>
     <h3 ng-show="winningAmount > 0">***Congrats, you have won ${{winningAmount}}!***</h3>
@@ -12,23 +12,23 @@
       <div class="raceStartBlock">
         <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': !raceStarting}">
           <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
-          <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+          <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
         </div>
       </div>
       <div class="raceBlock"">
         <div class="raceLane" ng-repeat="truckerBet in truckerBets" style="border: 1px solid black;">
-          <div ng-class="{'hideTruck': ($index === (winnerTrucker-1) && !raceStarting)}">
-            <div ng-repeat="i in [1,2,3]" style="float: right;color: {{truckerBet.color}}" >
-              <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
-              <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+          <div ng-class="{'hideTruck': ($index === (winnerTrucker-1) || raceStarting)}">
+            <div ng-repeat="i in [1,2,3]" style="float: right;color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== truckerBet.rand)}">
+              <span ng-if="truckerBet.bet > 0" ng-hide="$index !== truckerBet.rand">{{truckerBet.bet | currency}}</span>
+              <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
             </div>
           </div>
         </div>
       </div>
       <div class="raceWinBlock">
-        <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== (winnerTrucker-1) && !raceStarting)}">
+        <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== (winnerTrucker-1) || raceStarting)}">
           <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
-          <i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+          <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
         </div>
       </div>
     </div>
@@ -36,14 +36,14 @@
   </div>
 
   <div class="footer">
-    <div class="container col-sm-10">
+    <div class="container col-sm-12">
       <button class="btn btn-primary center" ng-click="placeBets('#myModal')">Place bet</button>
       <button class="btn btn-primary center" ng-click="startRace()" ng-class="{'disabled': !betsSet}" ng-disabled="!betsSet">Start race</button>
     </div>
-    <div class="col-sm-2 pullRight">
+    <div class="col-sm-12 pullRight">
       <span>{{playerAccountBalance | currency}}</span>
       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-
+      <div>{{playerName}}</div>
     </div>
   </div>
 </div>
@@ -64,7 +64,7 @@
             <div class="form-group row" ng-repeat="truckerBet in truckerBets">
               <label for="truckerLabel" class="col-sm-3 col-form-label">{{truckerBet.name + ' (' + truckerBet.color + ')'}}</label>
               <div class="col-sm-4">
-                <input class="form-control" type="number" step="10" name="truckerInput_{{$index}}" ng-model="truckerBet.bet" ng-required="true" ng-change="calcTotalBet()">
+                <input class="form-control" type="number" min="0" step="10" name="truckerInput_{{$index}}" ng-model="truckerBet.bet" ng-required="true" ng-change="calcTotalBet()">
                 <div class="text-danger"  ng-show="formBetting['truckerInput_' + $index].$invalid && !formBetting['truckerInput_' + $index].$touched" >Enter a valid bet amount.</div>
               </div>
             </div>

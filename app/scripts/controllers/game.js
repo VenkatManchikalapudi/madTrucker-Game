@@ -10,6 +10,7 @@
 angular.module('madTruckerApp')
   .controller('GameCtrl', ['$scope', 'bettingService', '$location', function ($scope, bettingService, $location) {
     $scope.numberOfTruckers = bettingService.numberOfTruckers;
+    $scope.playerName = bettingService.playerName;
     $scope.playerAccountBalance = parseInt(bettingService.playerAccountBalance);
     $scope.truckerBets = [];
     $scope.alertPlayerOfInsufficientBalance = false;
@@ -25,7 +26,8 @@ angular.module('madTruckerApp')
           'id': i,
           'name': 'Trucker ' + i,
           'bet': 0,
-          'color': $scope.truckerColors[i]
+          'color': $scope.truckerColors[i],
+          'rand': 0
         });
       }
     })();
@@ -52,15 +54,16 @@ angular.module('madTruckerApp')
     $scope.setupTruckerBets = setupTruckerBets;
 
     function startRace(){
-      $scope.winnerTrucker = Math.floor(Math.random()* ($scope.numberOfTruckers + 1));
+      $scope.winnerTrucker = Math.floor(Math.random()* ($scope.numberOfTruckers)) + 1;
       _.each($scope.truckerBets, function(truckerBet){
           if(truckerBet.id === $scope.winnerTrucker){
             $scope.playerAccountBalance = (($scope.playerAccountBalance - truckerBet.bet) + (2 * truckerBet.bet));
             $scope.winningAmount = truckerBet.bet;
           }else{
             $scope.playerAccountBalance = ($scope.playerAccountBalance - truckerBet.bet);
+            truckerBet.rand = $scope.random();
           }
-        truckerBet.bet = 0;
+        //truckerBet.bet = 0;
       });
       $scope.betsSet = false;
       $scope.totalBet = 0;
@@ -71,7 +74,11 @@ angular.module('madTruckerApp')
     $scope.startRace = startRace;
 
     function placeBets(modalId){
+      _.each($scope.truckerBets, function(truckerBet) {
+        truckerBet.bet = 0;
+      });
       $scope.raceStarting = true;
+      $scope.winningAmount = 0;
       $scope.alertPlayerOfInsufficientBalance = false;
       $scope.totalBet = 0;
       angular.element(modalId).modal({backdrop: "static"});
@@ -92,5 +99,11 @@ angular.module('madTruckerApp')
     }
 
     $scope.calcTotalBet = calcTotalBet;
+
+    function generateRandom(){
+      return Math.floor(Math.random()*3);
+    };
+
+    $scope.random = generateRandom;
 
   }]);

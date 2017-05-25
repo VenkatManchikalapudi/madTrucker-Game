@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <title></title>
 </head>
-<body>
+<div>
 
-  <div class="container">
+  <div class="jumbotron container">
     <form name="formResetGame" ng-submit="setupGame()" novalidate>
       <div class="form-group row">
-        <label for="player-name-input" class="col-sm-3 col-form-label">Player Name</label>
         <div class="col-sm-4">
-          <input class="form-control" type="text" value="Player 1" name="playerName" ng-model="playerName" required>
-          <div class="text-danger" ng-show="formResetGame.playerName.$invalid && formResetGame.playerName.$touched">Valid player name is required.</div>
+          <label for="player-name-input" class=" col-form-label pull-left">Player Name</label>
+        </div >
+        <div class="col-sm-4">
+          <input class="form-control pull-left" type="text" value="Player 1" name="playerName" ng-model="playerName" required>
+          <div class="text-danger pull-left" ng-show="formResetGame.playerName.$invalid && formResetGame.playerName.$touched">Valid player name is required.</div>
         </div>
 
       </div>
       <div class="form-group row">
-        <label for="number-of-truckers-input" class=col-sm-3 col-form-label">Number Of Truckers</label>
-        <div class="col-sm-9">
-          <select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="truckerCountSelect" ng-model="numberOfTruckers" required>
+        <div class="col-sm-4">
+          <label for="number-of-truckers-input" class="col-form-label pull-left">Number Of Truckers</label>
+        </div>
+        <div class="col-sm-4">
+          <select class="custom-select mb-2 mr-sm-2 mb-sm-0 pull-left" name="truckerCountSelect" ng-model="numberOfTruckers" required>
             <option selected value="">Choose number of truckers</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -27,14 +31,16 @@
             <option value="5">Five</option>
             <option value="6">Six</option>
           </select>
-          <div class="text-danger"  ng-show="formResetGame.truckerCountSelect.$invalid && !formResetGame.truckerCountSelect.$touched">Valid trucker count is required.</div>
+          <div class="text-danger pull-left"  ng-show="formResetGame.truckerCountSelect.$invalid && !formResetGame.truckerCountSelect.$touched">Valid trucker count is required.</div>
         </div>
       </div>
       <div class="form-group row">
-        <label for="example-email-input" class="col-sm-3 col-form-label">Initial Funds</label>
         <div class="col-sm-4">
-          <input class="form-control" type="number" value="1000" min="1000" step="10" name="playerFunds" ng-model="initialFunds" required>
-          <div ng-show="formResetGame.playerFunds.$invalid && !formResetGame.playerFunds.$pristine" class="text-danger" >Valid intial funds value is required.</div>
+          <label for="example-email-input" class="col-form-label pull-left">Initial Funds</label>
+        </div>
+        <div class="col-sm-4">
+          <input class="form-control pull-left" type="number" value="1000" min="1000" step="10" name="playerFunds" ng-model="initialFunds" required>
+          <div ng-show="formResetGame.playerFunds.$invalid && !formResetGame.playerFunds.$pristine" class="text-danger pull-left" >Valid intial funds value is required.</div>
         </div>
       </div>
 
