@@ -15,7 +15,6 @@ angular.module('madTruckerApp')
     $scope.playerName = bettingService.playerName;
     $scope.playerAccountBalance = parseInt(bettingService.playerAccountBalance);
     $scope.truckerBets = [];
-    $scope.alertPlayerOfInsufficientBalance = false;
     $scope.winningAmount = 0;
     $scope.winnerTrucker = 0;
     $scope.raceStarting = true;
@@ -47,7 +46,6 @@ angular.module('madTruckerApp')
       $scope.calcTotalBet();
       if($scope.totalBet > $scope.playerAccountBalance){
         $scope.betsSet = false;
-        $scope.alertPlayerOfInsufficientBalance = true;
       }else{
         if($scope.totalBet === 0){
           $scope.betsSet = false;
@@ -100,7 +98,6 @@ angular.module('madTruckerApp')
       }
       $scope.raceStarting = true;
       $scope.winningAmount = 0;
-      $scope.alertPlayerOfInsufficientBalance = false;
       /*$scope.totalBet = 0;*/
       angular.element(modalId).modal({backdrop: "static"});
     };
