@@ -75,7 +75,6 @@ angular.module('madTruckerApp')
             $scope.playerAccountBalance = ($scope.playerAccountBalance - truckerBet.bet);
             truckerBet.rand = $scope.random(3);
           }
-        //truckerBet.bet = 0;
       });
       $scope.betsSet = false;
       $scope.totalBet = 0;
