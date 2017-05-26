@@ -22,7 +22,7 @@ angular
     $routeProvider
       .when('/game', {
         templateUrl: 'views/game.html',
-        controller: 'GameCtrl',
+        controller: 'gameCtrl',
         controllerAs: 'game'
       })
       .when('/gameSetup', {

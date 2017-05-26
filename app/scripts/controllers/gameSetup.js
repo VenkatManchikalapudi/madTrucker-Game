@@ -10,10 +10,18 @@
 angular.module('madTruckerApp')
   .controller('gameSetupCtrl', ['$scope', 'bettingService', '$location', function ($scope, bettingService, $location) {
 
+    /*variables setup*/
     $scope.playerName = 'Player 1';
     $scope.initialFunds = 1000;
     $scope.numberOfTruckers = "4";
 
+    /**
+     * @ngdoc function
+     * @name setupGame
+     * @description
+     * # setupGame
+     * Function that sets up the game values.
+     */
    function setupGame(){
      bettingService.playerName = $scope.playerName;
      bettingService.initialFunds = $scope.initialFunds;

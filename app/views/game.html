@@ -2,33 +2,35 @@
 
   <div class="header">
     <div class="container col-sm-12">
-      <button class="btn-sm btn-primary" ng-click="resetGame()">Reset</button>
+      <button class="btn btn-primary" ng-click="resetGame()">Reset</button>
     </div>
-    <h3 ng-show="winningAmount > 0">***Congrats, you have won ${{winningAmount}}!***</h3>
+    <div class="col-sm-12 alert alert-success" role="alert" ng-if="winningAmount > 0">
+      Congrats, you have won ${{winningAmount}}!
+    </div>
   </div>
 
   <div class="content">
     <div class="container col-sm-12 race">
       <div class="raceStartBlock">
         <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': !raceStarting}">
-          <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
-          <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
+          <span class="betAmountLbl" ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
+          <i class="fa fa-truck fa-3x fa-flip-horizontal" aria-hidden="true"></i>
         </div>
       </div>
       <div class="raceBlock"">
-        <div class="raceLane" ng-repeat="truckerBet in truckerBets" style="border: 1px solid black;">
+        <div class="raceLane" ng-repeat="truckerBet in truckerBets" ng-class="{'first-raceLane': $first, 'last-raceLane': $last}">
           <div ng-class="{'hideTruck': ($index === (winnerTrucker-1) || raceStarting)}">
-            <div ng-repeat="i in [1,2,3]" style="float: right;color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== truckerBet.rand)}">
-              <span ng-if="truckerBet.bet > 0" ng-hide="$index !== truckerBet.rand">{{truckerBet.bet | currency}}</span>
-              <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
+            <div class="raceTruckBlock" ng-repeat="i in [1,2,3]" style="float: right;color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== truckerBet.rand)}">
+              <span class="betAmountLbl" ng-if="truckerBet.bet > 0" ng-hide="$index !== truckerBet.rand">{{truckerBet.bet | currency}}</span>
+              <i class="fa fa-truck fa-3x fa-flip-horizontal" aria-hidden="true"></i>
             </div>
           </div>
         </div>
       </div>
       <div class="raceWinBlock">
         <div class="raceTruckBlock" ng-repeat="truckerBet in truckerBets" style="color: {{truckerBet.color}}" ng-class="{'hideTruck': ($index !== (winnerTrucker-1) || raceStarting)}">
-          <span ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
-          <i class="fa fa-truck fa-4x fa-flip-horizontal" aria-hidden="true"></i>
+          <span class="betAmountLbl" ng-if="truckerBet.bet > 0">{{truckerBet.bet | currency}}</span>
+          <i class="fa fa-truck fa-3x fa-flip-horizontal" aria-hidden="true"></i>
         </div>
       </div>
     </div>
@@ -36,8 +38,11 @@
   </div>
 
   <div class="footer">
+    <div class="col-sm-12 alert alert-danger" role="alert" ng-if="playerAccountBalance < 10">
+      You do not have enough balance to bet. Please reset the game to play.
+    </div>
     <div class="container col-sm-12">
-      <button class="btn btn-primary center" ng-click="placeBets('#myModal')">Place bet</button>
+      <button class="btn btn-primary center" ng-click="openBettingInterface('#myModal')" ng-disabled="playerAccountBalance < 10">Place bet</button>
       <button class="btn btn-primary center" ng-click="startRace()" ng-class="{'disabled': !betsSet}" ng-disabled="!betsSet">Start race</button>
     </div>
     <div class="col-sm-12 pullRight">
@@ -57,9 +62,8 @@
       <div class="modal-header">
         <h4 class="modal-title">Place Bet</h4>
       </div>
-      <div class="modal-body">
-        <div class="container">
 
+      <div class="modal-body">
           <form name="formBetting" novalidation>
             <div class="form-group row" ng-repeat="truckerBet in truckerBets">
               <label for="truckerLabel" class="col-sm-3 col-form-label">{{truckerBet.name + ' (' + truckerBet.color + ')'}}</label>
@@ -72,14 +76,12 @@
               You do not have enough balance for this bet. Please reset the game to play
             </div>
             <div class="form-group row">
-              <div class="col-sm-12 pull-right">
+              <div class="col-sm-12  ">
                 <button class="btn btn-primary " ng-click="setupTruckerBets('#myModal')" ng-class="{'disabled': alertPlayerOfInsufficientBalance ||(totalBet === 0)}" ng-disabled="alertPlayerOfInsufficientBalance || (totalBet === 0)">Bet</button>
-                <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" data-dismiss="modal" ng-click="clearBets()">Cancel</button>
               </div>
             </div>
           </form>
-
-        </div>
       </div>
 
     </div>
